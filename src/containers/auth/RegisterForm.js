@@ -2,13 +2,17 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, register } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
+import { check } from "../../modules/user";
+import { createBrowserHistory } from "history";
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
-  const { form, auth, authError } = useSelector(({ auth }) => ({
+  const history = createBrowserHistory();
+  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     form: auth.register,
     auth: auth.auth,
     authError: auth.authError,
+    user: user.user,
   }));
   // Input change Event Handler
   const onChange = (e) => {
@@ -43,14 +47,23 @@ const RegisterForm = () => {
     if (authError) {
       console.log("오류 발생");
       console.log(authError);
-      console.log(auth);
       return;
     }
     if (auth) {
       console.log("회원가입 성공");
       console.log(auth);
+      dispatch(check());
     }
-  }, [auth, authError]);
+  }, [auth, authError, dispatch]);
+
+  //user 값이 잘 설정되었는지 확인
+  useEffect(() => {
+    if (user) {
+      history.push("/", user);
+      console.log("check API 성공");
+      console.log(user);
+    }
+  }, [history, user]);
 
   return (
     <AuthForm
