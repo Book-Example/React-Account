@@ -1,10 +1,11 @@
-import Button from "../components/common/Button";
+import Headers from "../components/common/Header";
 
 const PostListPage = () => {
-    return(
-        <div>
-            <Button>버튼</Button>
-        </div>
-    );
+  return (
+    <div>
+      <Headers />
+      <div>안녕하세요.</div>
+    </div>
+  );
 };
 export default PostListPage;
