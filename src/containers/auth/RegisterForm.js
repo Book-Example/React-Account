@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, register } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { check } from "../../modules/user";
-import { createBrowserHistory } from "history";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const history = createBrowserHistory();
+  const navigate = useNavigate();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     form: auth.register,
     auth: auth.auth,
@@ -75,11 +75,11 @@ const RegisterForm = () => {
   //user 값이 잘 설정되었는지 확인
   useEffect(() => {
     if (user) {
-      history.push("/", user);
+      navigate("/");
       console.log("check API 성공");
       console.log(user);
     }
-  }, [history, user]);
+  }, [navigate, user]);
 
   return (
     <AuthForm

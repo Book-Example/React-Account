@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { check } from "../../modules/user";
-import { createBrowserHistory } from "history";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const history = createBrowserHistory();
   const dispatch = useDispatch();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     form: auth.login,
@@ -54,9 +54,14 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      history.push("/", user);
+      navigate("/");
+      try {
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (e) {
+        console.log("localStorage is not working");
+      }
     }
-  }, [history, user]);
+  }, [navigate, user]);
   return (
     <AuthForm
       type="login"
